@@ -5,6 +5,11 @@ import "./App.css";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import CloseIcon from '@material-ui/icons/Close';
+import ErrorIcon from '@material-ui/icons/Error';
+import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
@@ -31,12 +36,17 @@ const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
     fontSize: "20px"
-  }
+  },
+  errorSnackbarContent: {
+    margin: theme.spacing.unit,
+    background: "#e50000"
+  },
 });
 
 class App extends Component {
   state = {
-    type: ""
+    type: "",
+    open: false,
   };
   calcMrpSum = workbook => {
     var mrpSum = 0;
@@ -73,7 +83,15 @@ class App extends Component {
     }
     
   }
-
+  openSnackBar = () => {
+    this.setState({ open: true });
+  };
+  handleSnackbarClose = reason => {
+    if (reason === "clickaway") {
+      return
+    }
+    this.setState({ open: false });
+  }
   handleClick = e => {
     e.preventDefault();
     var number = document.getElementById("number").value;
@@ -141,6 +159,10 @@ class App extends Component {
       };
 
       reader.readAsArrayBuffer(file);
+    } else {
+      this.setState({
+        open: true,
+      })
     }
   };
 
@@ -163,6 +185,7 @@ class App extends Component {
             margin="normal"
             variant="outlined"
             helperText="Amount to distribute."
+            required
           />
           <br />
           <TextField
@@ -180,6 +203,7 @@ class App extends Component {
             helperText="Please select drug or cosm."
             margin="normal"
             variant="outlined"
+            required
           >
             <MenuItem key={"drug"} value={"drug"}>
               drug
@@ -193,7 +217,7 @@ class App extends Component {
           <br />
           <label htmlFor="file" onKeyDown={this.handleKeyDown} className="typeBorder" tabIndex="0">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path fill="#000000de" d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path></svg>
-          <input type="file" id="file" accept="*.xlsx" onChange={this.handleFileSelect} className="type" required />
+          <input type="file" id="file" accept=".xlsx" onChange={this.handleFileSelect} className="type" required />
           <span>Choose a file</span>
           </label>
           <br />
@@ -209,6 +233,24 @@ class App extends Component {
             Calculate
           </Button>
         </form>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          open={this.state.open}
+          autoHideDuration={6000}
+          //onClose={handleSnackbarClose}
+        >
+		<SnackbarContent 
+		  className={classes.errorSnackbarContent} 
+		  message={<span className={classes.message}><ErrorIcon className={classes.icon, classes.iconVariant} />Please, fill in the right data!</span>}
+		  action={
+			  <IconButton onClick={this.handleSnackbarClose}>
+				  <CloseIcon />
+			  </IconButton>
+		  } />
+		</Snackbar>
       </div>
     );
   }
