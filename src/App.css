@@ -1,0 +1,72 @@
+* {
+  font-family: "Roboto", sans-serif;
+}
+body {
+  font-family: "Roboto", sans-serif;
+  background: #beb;
+}
+.App {
+  text-align: center;
+  margin: auto;
+  max-width: 60vw;
+  height: 100vh;
+  padding: 50px 0 0 50px;
+  display: flex;
+  background: #beb;
+  flex-direction: column;
+}
+header {
+  width: 100%;
+  display: block;
+}
+h1 {
+  margin: 0 0 40px;
+  text-align: left;
+  display: inline-block;
+  width: 100%;
+}
+
+form {
+  text-align: left;
+  border-left: 3px solid #222;
+}
+
+.type {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+  margin-left: 8px;
+  width: 250px;
+}
+
+.typeBorder {
+  border: 1px solid #0000003b;
+  border-radius: 2px;
+  margin-left: 8px;
+  color: rgba(0, 0, 0, 0.87);
+  width: 250px;
+  padding: 16px 44px;
+}
+.typeBorder span {
+  width: 250px;
+  padding: 16px 24px;
+}
+.typeBorder:hover {
+  border: 1px solid #000000de;
+  cursor: pointer;
+}
+
+.type + .typeBorder {
+  max-width: 80%;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    padding: 16px 24px;
+}
